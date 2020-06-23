@@ -1,0 +1,31 @@
+.login{
+    background-image: url(../../Images/bannerbackground.png);
+    background-repeat: no-repeat;
+    background-size:fill;
+    box-sizing: content-box;
+}
+
+.option{
+    color: tomato;
+    cursor: pointer;
+}
+
+.create{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: tomato;
+}
+
+.create:hover{
+    text-decoration: underline;
+    color: crimson;
+}
+
+.create:focus{
+    outline:none;
+
+}

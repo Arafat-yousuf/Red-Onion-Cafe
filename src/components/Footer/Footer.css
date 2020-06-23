@@ -1,0 +1,12 @@
+footer img{
+    height: 50px;
+}
+footer  a{
+    color: #ffffff;
+    display: block;
+    line-height: 2;
+}
+footer a:hover{
+    color: crimson;
+    text-decoration: none;
+}
