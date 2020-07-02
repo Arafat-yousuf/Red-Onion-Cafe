@@ -59,37 +59,38 @@ const checkOutItem = (productId, productQuantity) => {
   const filteredCart = newCart.filter(item => item.quantity > 0)
   setCart(filteredCart)
 }
-
+const [returningUser,setReturningUser] = useState();
+const handleReturningUser = (state) => setReturningUser(state)
   return (
     <AuthProvider>
       <Router>
         <div className="mainapp" >
           <Switch>
             <Route exact path="/">
-              <Header cart={cart} />
+              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
               <Banner />
               <FoodMenu cart={cart} />
               <FeatureSet />
               <Footer />
             </Route>
             <Route path="/food/:id">
-              <Header cart={cart} />
+              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
               <Banner />
               <FoodDetails cart={cart} handleCart={handleCart} />
               <Footer />
             </Route>
             <PrivateRoute path="/checkout">
-              <Header cart={cart} />
+              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
               <Delivary deliveryDetails={deliveryDetails} handleDeliveryDetails={handleDeliveryDetails} cart={cart} clearCart={clearCart} checkOutItem={checkOutItem} getUserEmail={getUserEmail} />
               <Footer />
             </PrivateRoute>
             <PrivateRoute path="/deliveryStatus">
-              <Header cart={cart}/>
+              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
               <DelivaryStatus deliveryDetails={deliveryDetails}/>
               <Footer/>
             </PrivateRoute>
-            <Route cart={cart} path="/login">
-                <Login/>
+            <Route path="/login">
+                <Login returningUser ={returningUser} handleReturningUser ={handleReturningUser}/>
             </Route>
             <Route path="*">
               <NotFound />

@@ -5,6 +5,7 @@ import './Header.css';
 import { useAuth } from '../Login/useAuth';
 const Header = (props) => {
     const auth = useAuth();
+    console.log(props.returningUser);
     return (
         <nav className="navbar navbar-expand navbar-light bg-white py-2 fixed-top">
             <div className="container">
@@ -23,7 +24,7 @@ const Header = (props) => {
                             auth.user ?  
                              <Link to="/checkout" className="nav-link">{auth.user.displayName}</Link> 
                             :
-                            <Link to="/login" className="nav-link">Login</Link> 
+                            <Link to="/login" className="nav-link" onClick={() => props.handleReturningUser(true)}>Login</Link> 
                         }
                     </li>
                     <li className="nav-item">
@@ -34,7 +35,7 @@ const Header = (props) => {
                             </Link>
                             :
                             <Link to="/login" className="nav-link">
-                                <button className="btn btn-danger">Sign Up</button>
+                                <button className="btn btn-danger" onClick={() => props.handleReturningUser(false)}>Sign Up</button>
                             </Link>
                         }
                        

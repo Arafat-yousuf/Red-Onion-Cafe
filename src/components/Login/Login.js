@@ -6,12 +6,13 @@ import {Link} from 'react-router-dom';
 import { useAuth } from './useAuth';
 
 const Login = (props) => {
-    const [returningUser , setReturningUser] = useState(false);
     const { register, handleSubmit, watch, errors } = useForm();
+    console.log(props);
+    
 
     const auth = useAuth();
     const onSubmit = data => { 
-        if(returningUser){
+        if(props.returningUser){
             if(data.email && data.password){
                 auth.signIn(data.email, data.password);
             }
@@ -22,7 +23,7 @@ const Login = (props) => {
         }
         
      }
-     console.log(props.cart);
+     
     return (
         <div className ="login">
             <div className="container">
@@ -33,7 +34,7 @@ const Login = (props) => {
                 </div>
                 
                 {
-                returningUser ? 
+                props.returningUser ? 
                 <form onSubmit={handleSubmit(onSubmit)} className="py-5">
                     {
                     auth.user != null && <p className="text-danger">* {auth.user.error}</p>
@@ -51,7 +52,7 @@ const Login = (props) => {
                         <button className="btn btn-danger btn-block" type="submit">Sign In</button>
                     </div>
                     <div className="option text-center">
-                        <button className ="create"  onClick={() => setReturningUser(false)}>Create a new Account</button>
+                        <button className ="create"  onClick={() => props.handleReturningUser(false)}>Create a new Account</button>
                     </div>
                 </form>
                 :
@@ -81,7 +82,7 @@ const Login = (props) => {
                         <button className="btn btn-danger btn-block"  type="submit">Sign Up</button>
                     </div>
                     <div className="option text-center">
-                        <button className="create" onClick={() => setReturningUser(true)}>Already Have an Account</button>
+                        <button className="create" onClick={() => props.handleReturningUser(true)}>Already Have an Account</button>
                     </div>
                 </form>
 
