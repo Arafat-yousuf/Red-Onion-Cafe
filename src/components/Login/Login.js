@@ -5,7 +5,7 @@ import Logo from '../../Images/logo2.png';
 import {Link} from 'react-router-dom';
 import { useAuth } from './useAuth';
 
-const Login = () => {
+const Login = (props) => {
     const [returningUser , setReturningUser] = useState(false);
     const { register, handleSubmit, watch, errors } = useForm();
 
@@ -22,6 +22,7 @@ const Login = () => {
         }
         
      }
+     console.log(props.cart);
     return (
         <div className ="login">
             <div className="container">

@@ -36,15 +36,15 @@ const clearCart =  () => {
 
 const handleCart = (data) => {
   const alreadyAdded = cart.find(crt => crt.id === data.id );
-  const newCart = [...cart,data]
-  setCart(newCart);
-  if(alreadyAdded){
-    const reamingCarts = cart.filter(crt => crt.id !== data.id);
-    setCart(reamingCarts);
-  }else{
-    const newCart = [...cart,data]
-    setCart(newCart);
-  }
+      const newCart = [...cart,data]
+      setCart(newCart);
+      if(alreadyAdded){
+        const reamingCarts = cart.filter(crt => cart.id !== data);
+        setCart(reamingCarts);
+      }else{
+        const newCart = [...cart,data]
+        setCart(newCart);
+      }
  
 }
 
@@ -88,7 +88,7 @@ const checkOutItem = (productId, productQuantity) => {
               <DelivaryStatus deliveryDetails={deliveryDetails}/>
               <Footer/>
             </PrivateRoute>
-            <Route path="/login">
+            <Route cart={cart} path="/login">
                 <Login/>
             </Route>
             <Route path="*">

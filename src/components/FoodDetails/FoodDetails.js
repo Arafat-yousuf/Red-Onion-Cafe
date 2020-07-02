@@ -8,8 +8,8 @@ const FoodDetails = (props) => {
     //console.log(id);  
     const selectedFood =  FoodItem.find(food => food.id === parseInt(id));
     //console.log(selectedFood);
-    console.log("hello");
-    const [quantity, setQuantity] = useState(1);
+    //console.log(selectedFood.quantity);
+    const [quantity, setQuantity] = useState(selectedFood.quantity);
     const handleCart = (currentFood) => {
         currentFood.quantity = quantity;
         props.handleCart(currentFood);
@@ -22,14 +22,14 @@ const FoodDetails = (props) => {
 
                     <p className="my-5">{selectedFood.fullDescription}</p>
                     <div className="d-flex  my-4">
-                        <h2 className="price">${selectedFood.price}</h2>
+                        <h2 className="price">${selectedFood.price*selectedFood.quantity}</h2>
 
                         <div className="cart-controller ml-3">
-                            <button className="btn inc-btn shadow-none" onClick={() => setQuantity(quantity <= 1 ? 1 : quantity - 1)}><svg className="bi bi-dash" width="30px" height="30px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <button className="btn inc-btn shadow-none" onClick={() => {setQuantity(quantity <= 1 ? 1 : quantity - 1);selectedFood.quantity-=1;}}><svg className="bi bi-dash" width="30px" height="30px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" d="M3.5 8a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z" />
                             </svg></button> 
                             <h4>{quantity}</h4> 
-                            <button className="btn dec-btn shadow-none" onClick={() => setQuantity(quantity + 1)}><svg className="bi bi-plus" width="30px" height="30px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <button className="btn dec-btn shadow-none" onClick={() => {setQuantity(quantity + 1);selectedFood.quantity+=1;}}><svg className="bi bi-plus" width="30px" height="30px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" />
                                 <path fillRule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z" />
                             </svg></button>
