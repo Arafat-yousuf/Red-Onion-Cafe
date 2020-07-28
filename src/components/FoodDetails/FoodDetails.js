@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import FoodItem from '../../fakeData/foodItems.json';
 import './FoodDetails.css'
 import { Plus,Dash,CartPlus,ChevronCompactRight } from 'react-bootstrap-icons';
+import { addToDatabaseCart, getDatabaseCart } from '../../Utilities/localCart';
 
 const FoodDetails = (props) => {
+    const [selectedFood,setSelectedFood] = useState({})
     const {id} = useParams();
-    //console.log(id);  
+    const [quantity, setQuantity] = useState(1);
+    useEffect(() => {
+        const savedCart = getDatabaseCart();
+        const productKeys = Object.keys(savedCart);
+        fetch("http://localhost:4200/food/"+ id)
+        .then(res=>res.json())
+        .then(data => {
+            setSelectedFood(data);
+            const product = productKeys.find( pd => pd === data.id);
+            if(product)
+            setQuantity(savedCart[data.id]);
+        })
+        .catch(err => console.log(err))
+    },[id])
+
+    const handleCart = (currentFood) => {
+       addToDatabaseCart(currentFood.id,quantity);
+    }
+    /*const {id} = useParams();
+    console.log(id);  
     const selectedFood =  FoodItem.find(food => food.id === parseInt(id));
-    //console.log(selectedFood);
-    //console.log(selectedFood.quantity);
+    console.log(selectedFood);
+    console.log(selectedFood.quantity);
     const [quantity, setQuantity] = useState(selectedFood.quantity);
     const handleCart = (currentFood) => {
         currentFood.quantity = quantity;
         props.handleCart(currentFood);
-    }
+    }*/
     return (
         <div className = "food-details my-5 pt-5 container">
             <div className="row">
@@ -23,12 +43,12 @@ const FoodDetails = (props) => {
 
                     <p className="my-5">{selectedFood.fullDescription}</p>
                     <div className="d-flex  my-4">
-                        <h2 className="price">${selectedFood.price*selectedFood.quantity}</h2>
+                        <h2 className="price">${selectedFood.price*quantity}</h2>
 
                         <div className="cart-controller ml-3">
-                            <button className="btn inc-btn shadow-none" onClick={() => {setQuantity(quantity <= 1 ? 1 : quantity - 1);selectedFood.quantity-=1;}}><Dash size="30px"/></button> 
+                            <button className="btn inc-btn shadow-none" onClick={() => {setQuantity(quantity <= 1 ? 1 : quantity - 1)}}><Dash size="30px"/></button> 
                             <h4>{quantity}</h4> 
-                            <button className="btn dec-btn shadow-none" onClick={() => {setQuantity(quantity + 1);selectedFood.quantity+=1;}}><Plus size="30px"/></button>
+                            <button className="btn dec-btn shadow-none" onClick={() => {setQuantity(quantity + 1)}}><Plus size="30px"/></button>
                         </div>
                     </div>
                     <div className="action d-flex align-items-center">

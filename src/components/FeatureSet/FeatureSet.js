@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Feature from '../Feature/Feature';
-import Features from'../../fakeData/features.json';
 
 const FeatureSet = (props) => {
-    const [features , setFeatures] = useState(Features);
+    const [features , setFeatures] = useState([]);
 
-    
+    useEffect(() => {
+        fetch('http://localhost:4200/features')
+        .then(res => res.json())
+        .then(data => {
+            setFeatures(data);
+        })
+        .catch(err => console.log(err))
+} ,[])
     
     return (
         <div className="container">

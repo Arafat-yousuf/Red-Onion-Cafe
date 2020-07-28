@@ -1,22 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {Link} from 'react-router-dom';
 import './Delivary.css';
 import { useAuth } from '../Login/useAuth';
+import { removeFromDatabaseCart, getDatabaseCart, addToDatabaseCart } from '../../Utilities/localCart';
 
 const Delivary = (props) => {
-    const { delivertodoor, road, flat, businessname, instruct} = props.deliveryDetails;
+    const [deliveryDetails , setDeliveryDetails] = useState({
+        todoor:null,road:null, flat:null, businessname:null, address: null
+      });
+    const { delivertodoor, road, flat, businessname, instruct} = deliveryDetails;
     const { register, handleSubmit, watch, errors } = useForm();
     const auth = useAuth();
+    const deliveryDetailsHandler = (data) => {
+        setDeliveryDetails(data)
+    }
     const onSubmit = data => {
-        props.handleDeliveryDetails(data);
-        props.getUserEmail(auth.user.email);
+        deliveryDetailsHandler(data);
+        //getUserEmail(auth.user.email);
     };
 
-    const subTotal = props.cart.reduce((acc,crr) => {
+    const [cart, setCart] = useState([]);
+
+    const removeProduct = (productKey) => {
+        const newCart = cart.filter(pd => pd.id !== productKey);
+        setCart(newCart);
+        removeFromDatabaseCart(productKey);
+    }
+
+    useEffect(()=>{
+        //cart
+        const savedCart = getDatabaseCart();
+        const productKeys = Object.keys(savedCart);
+        console.log(productKeys);
+        fetch('http://localhost:4200/getFoodsById', {
+            method: 'POST', 
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productKeys)
+          })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            const cartProducts =  productKeys.map( key => {
+                const product = data.find( pd => pd.id === key);
+                product.quantity = savedCart[key];
+                console.log(product.quantity);
+                return product;
+            });
+            setCart(cartProducts);
+        })
+        
+    }, []);
+
+    const handleCart = (productId, productQuantity) => {
+        const newCart = cart.map(item => {
+          if(item.id === productId){
+              item.quantity = productQuantity;
+              console.log(item.quantity);
+              if(item.quantity!==0)
+              addToDatabaseCart(item.id,item.quantity);
+              else removeProduct(item.id);
+          }
+          
+          
+          return item;
+        })
+        setCart(newCart);
+      }
+
+        console.log(cart);
+    const subTotal = cart.reduce((acc,crr) => {
         return acc + (crr.price * crr.quantity) ;
     },0)
-    const totalQuantity = props.cart.reduce((acc,crr) => {
+    const totalQuantity = cart.reduce((acc,crr) => {
         return acc + crr.quantity ;
     },0)
     const tax = (subTotal / 100) * 5;
@@ -64,7 +122,7 @@ const Delivary = (props) => {
                     </div>
                    
                     {
-                        props.cart.map(item => 
+                        cart.map(item => 
                             <div className="single-checkout-item mb-3 bg-light rounded d-flex align-items-center justify-content-between p-3">
                                 <img width="100px" src={item.image} alt=""/>
                                 <div>
@@ -72,18 +130,16 @@ const Delivary = (props) => {
                                     <h4 className="text-danger">${item.price}</h4>
                                     <p>Delivery free</p>
                                 </div>
-                                <div className="checkout-item-button ml-3 btn">
-                                    <button onClick={() => props.checkOutItem(item.id, (item.quantity+1)) } className="btn font-weight-bolder">+</button>
-                                    <button className="btn bg-white rounded">{item.quantity}</button>
-
+                                <div className="checkout-item ml-3 row">
+                                    <button onClick={() => handleCart(item.id,(item.quantity+1)) } className="btn font-weight-bolder">+</button>
+                                    <p className="bg-white m-1 pt-1 rounded">{item.quantity}</p> 
                                     {
                                         item.quantity > 0 ? 
-                                        <button className="btn font-weight-bolder" onClick={() => props.checkOutItem(item.id, (item.quantity -1) )}>-</button>
+                                        <button className="btn font-weight-bolder" onClick={() => handleCart(item.id, (item.quantity -1) )}>-</button>
                                         :
                                         <button disabled className="btn font-weight-bolder">-</button>
 
                                     }
-                                   
                                 </div>
                             </div>
                         )

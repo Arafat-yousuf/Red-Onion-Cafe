@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../Images/logo2.png';
 import './Header.css';
 import { useAuth } from '../Login/useAuth';
 import {Cart3} from 'react-bootstrap-icons';
+import { getDatabaseCart } from '../../Utilities/localCart';
+import { useEffect } from 'react';
 const Header = (props) => {
     const auth = useAuth();
-    console.log(props.returningUser);
+    //console.log(props.returningUser);
+    const [cartSize,setCartSize] = useState(0);
+    //let cartSize = Object.keys(cart).length;
+
+    useEffect(() =>{
+        const cart = getDatabaseCart();
+        setCartSize(Object.keys(cart).length);
+    })
+    //console.log(cartSize);
+
     return (
         <nav className="navbar navbar-expand navbar-light bg-white py-2 fixed-top">
             <div className="container">
@@ -16,7 +27,7 @@ const Header = (props) => {
                 <ul className="navbar-nav align-items-center">
                     <li className="nav-item active">
                         <Link to="/checkout" className="nav-link"><Cart3 size="30px"/>
-                            <span className="badge bg-light">{props.cart.length}</span>
+                            <span className="badge bg-light">{cartSize}</span>
                         </Link>
                     </li>
                     <li className="nav-item">

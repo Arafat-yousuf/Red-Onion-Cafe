@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FoodMenu.css'
 import Food from '../Food/Food'
-import FoodItems from '../../fakeData/foodItems.json'
 import { Link } from 'react-router-dom';
+import { getDatabaseCart } from '../../Utilities/localCart';
 const FoodMenu = (props) => {
-    const [food, setFood] = useState(FoodItems);
+    const [food, setFood] = useState([]);
     const [FoodType, setFoodType] = useState("Breakfast");
+    const cart = getDatabaseCart();
+    const cartLength = Object.keys(cart).length;
+    console.log(cartLength);
 
+    useEffect(() => {
+        fetch('http://localhost:4200/foods')
+        .then(res => res.json())
+        .then(data => {
+            setFood(data);
+        })
+        .catch(err => console.log(err))
+    } ,[])
+    
+   // console.log(food);
     const selectedFoods =  food.filter(food => food.type === FoodType)
 
     return (
@@ -30,7 +43,7 @@ const FoodMenu = (props) => {
             </div>
                 <div className="text-center">
                     {
-                        props ? 
+                        cartLength ? 
                         <Link to="/checkout">
                             <button  className="btn btn-danger">Check Out Your Food</button>
                         </Link>

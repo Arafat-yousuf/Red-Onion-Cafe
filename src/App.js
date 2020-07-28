@@ -16,81 +16,46 @@ import NotFound from './components/NotFound/NotFound';
 import Delivary from './components/Delivary/Delivary';
 import Login from './components/Login/Login';
 import DelivaryStatus from './components/DelivaryStatus/DelivaryStatus';
+import Inventory from './components/Inventory/Inventory';
 function App() {
-  const [cart , setCart] = useState([]);
-  const [deliveryDetails , setDeliveryDetails] = useState({
-    delivertodoor:null,road:null, flat:null, businessname:null, instruct: null
-  });
 
-  const [userEmail, setUserEmail] = useState(null);
+  const [returningUser,setReturningUser] = useState();
+  const handleReturningUser = (state) => setReturningUser(state);
 
-  const handleDeliveryDetails = (data) => {
-    setDeliveryDetails(data)
-}
-const getUserEmail = (email) => {
-  setUserEmail(email)
-}
-const clearCart =  () => {
-  return setCart([]);
-}
 
-const handleCart = (data) => {
-  const alreadyAdded = cart.find(crt => crt.id === data.id );
-      const newCart = [...cart,data]
-      setCart(newCart);
-      if(alreadyAdded){
-        const reamingCarts = cart.filter(crt => cart.id !== data);
-        setCart(reamingCarts);
-      }else{
-        const newCart = [...cart,data]
-        setCart(newCart);
-      }
- 
-}
-
-const checkOutItem = (productId, productQuantity) => {
-  const newCart = cart.map(item => {
-    if(item.id === productId){
-        item.quantity = productQuantity;
-    }
-    return item;
-  })
-
-  const filteredCart = newCart.filter(item => item.quantity > 0)
-  setCart(filteredCart)
-}
-const [returningUser,setReturningUser] = useState();
-const handleReturningUser = (state) => setReturningUser(state)
   return (
     <AuthProvider>
       <Router>
         <div className="mainapp" >
           <Switch>
             <Route exact path="/">
-              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
+              <Header handleReturningUser ={handleReturningUser}/>
               <Banner />
-              <FoodMenu cart={cart} />
+              <FoodMenu/>
               <FeatureSet />
               <Footer />
             </Route>
             <Route path="/food/:id">
-              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
+              <Header handleReturningUser ={handleReturningUser}/>
               <Banner />
-              <FoodDetails cart={cart} handleCart={handleCart} />
+              <FoodDetails/>
               <Footer />
             </Route>
             <PrivateRoute path="/checkout">
-              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
-              <Delivary deliveryDetails={deliveryDetails} handleDeliveryDetails={handleDeliveryDetails} cart={cart} clearCart={clearCart} checkOutItem={checkOutItem} getUserEmail={getUserEmail} />
+              <Header handleReturningUser ={handleReturningUser}/>
+              <Delivary/>
               <Footer />
             </PrivateRoute>
             <PrivateRoute path="/deliveryStatus">
-              <Header cart={cart} handleReturningUser ={handleReturningUser}/>
-              <DelivaryStatus deliveryDetails={deliveryDetails}/>
+              <Header handleReturningUser ={handleReturningUser}/>
+              <DelivaryStatus/>
               <Footer/>
             </PrivateRoute>
             <Route path="/login">
                 <Login returningUser ={returningUser} handleReturningUser ={handleReturningUser}/>
+            </Route>
+            <Route path="/inventory">
+              <Inventory></Inventory>
             </Route>
             <Route path="*">
               <NotFound />
