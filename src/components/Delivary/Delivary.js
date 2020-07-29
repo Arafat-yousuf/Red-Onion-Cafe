@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import './Delivary.css';
-import { useAuth } from '../Login/useAuth';
-import { removeFromDatabaseCart, getDatabaseCart, addToDatabaseCart, clearLocalShoppingCart } from '../../Utilities/localCart';
+import { removeFromDatabaseCart, getDatabaseCart, addToDatabaseCart } from '../../Utilities/localCart';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../PaymentForm/PaymentForm';
@@ -16,10 +14,8 @@ const Delivary = (props) => {
     });
     const { delivertodoor, road, flat, businessname, instruct } = deliveryDetails;
     const { register, handleSubmit, watch, errors } = useForm();
-    const auth = useAuth();
     const stripePromise = loadStripe('pk_test_51HAASpHWttGIGToiEvm33982N4iam18LvLWIK5WXePpxE8CnsfMDNWrqK675wKBjOhClvZZGpnVXwdhFF7rm4jMD00iJ87jAOl');
     const [cart, setCart] = useState([]);
-    //const [orderId, setOrderId] = useState(null);
 
     const onSubmit = data => {
         setDeliveryDetails(data);
@@ -39,7 +35,7 @@ const Delivary = (props) => {
         //cart
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        console.log(productKeys);
+        //console.log(productKeys);
         fetch('http://localhost:4200/getFoodsById', {
             method: 'POST',
             headers: {
@@ -49,11 +45,11 @@ const Delivary = (props) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                //console.log(data);
                 const cartProducts = productKeys.map(key => {
                     const product = data.find(pd => pd.id === key);
                     product.quantity = savedCart[key];
-                    console.log(product.quantity);
+                    //console.log(product.quantity);
                     return product;
                 });
                 setCart(cartProducts);
@@ -65,7 +61,7 @@ const Delivary = (props) => {
         const newCart = cart.map(item => {
             if (item.id === productId) {
                 item.quantity = productQuantity;
-                console.log(item.quantity);
+                //console.log(item.quantity);
                 if (item.quantity !== 0)
                     addToDatabaseCart(item.id, item.quantity);
                 else removeProduct(item.id);
@@ -75,30 +71,8 @@ const Delivary = (props) => {
         setCart(newCart);
     }
 
-    const checkOutCart = (payment) => {
-        const savedCart = getDatabaseCart();
-        const orderDetails = {
-            email: auth.user.email,
-            cart: savedCart,
-            shipment: deliveryDetails,
-            payment: payment
-        };
-        fetch('http://localhost:4200/placeOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(orderDetails)
-        })
-            .then(res => res.json())
-            .then(order => {
-                //setOrderId(order._id);
-                clearLocalShoppingCart();
-            })
-        clearLocalShoppingCart();
-    }
+    
 
-    console.log(cart);
     const subTotal = cart.reduce((acc, crr) => {
         return acc + (crr.price * crr.quantity);
     }, 0)
@@ -116,7 +90,7 @@ const Delivary = (props) => {
                         className="col-md-6">
                         <h3>Payment Information</h3>
                         <Elements stripe={stripePromise}>
-                            <PaymentForm checkOutCart={checkOutCart} ></PaymentForm>
+                            <PaymentForm deliveryDetails={deliveryDetails}></PaymentForm>
                         </Elements>
                     </div>
                     :

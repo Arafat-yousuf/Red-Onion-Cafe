@@ -8,7 +8,7 @@ const FoodMenu = (props) => {
     const [FoodType, setFoodType] = useState("Breakfast");
     const cart = getDatabaseCart();
     const cartLength = Object.keys(cart).length;
-    console.log(cartLength);
+    //console.log(cartLength);
 
     useEffect(() => {
         fetch('http://localhost:4200/foods')

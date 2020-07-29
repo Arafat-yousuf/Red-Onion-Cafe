@@ -17,6 +17,7 @@ import Delivary from './components/Delivary/Delivary';
 import Login from './components/Login/Login';
 import DelivaryStatus from './components/DelivaryStatus/DelivaryStatus';
 import Inventory from './components/Inventory/Inventory';
+import SearchFood from './components/SearchFood/SearchFood';
 function App() {
 
   const [returningUser,setReturningUser] = useState();
@@ -41,12 +42,19 @@ function App() {
               <FoodDetails/>
               <Footer />
             </Route>
+            <Route path="/search/:query">
+                <Header handleReturningUser ={handleReturningUser}/>
+                <Banner/>
+                <SearchFood/>
+                <FeatureSet/>
+                <Footer/>
+            </Route>
             <PrivateRoute path="/checkout">
               <Header handleReturningUser ={handleReturningUser}/>
               <Delivary/>
               <Footer />
             </PrivateRoute>
-            <PrivateRoute path="/deliveryStatus">
+            <PrivateRoute path="/deliveryStatus/:id">
               <Header handleReturningUser ={handleReturningUser}/>
               <DelivaryStatus/>
               <Footer/>

@@ -1,0 +1,16 @@
+.image { 
+    position: relative;
+    text-align: center;
+    
+ }
+ 
+ .top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    color:white;
+    background-color: crimson;
+    padding: 0px 10px 10px 10px;
+    border-radius: 0px 0px 0px 100px;
+  }
+  

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Login.css';
 import { useForm } from 'react-hook-form';
 import Logo from '../../Images/logo2.png';
@@ -7,7 +7,7 @@ import { useAuth } from './useAuth';
 
 const Login = (props) => {
     const { register, handleSubmit, watch, errors } = useForm();
-    console.log(props);
+    //console.log(props);
     
 
     const auth = useAuth();
