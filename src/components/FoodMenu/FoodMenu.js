@@ -3,9 +3,12 @@ import './FoodMenu.css'
 import Food from '../Food/Food'
 import { Link } from 'react-router-dom';
 import { getDatabaseCart } from '../../Utilities/localCart';
+import Loading from '../Loading/Loading';
+
 const FoodMenu = (props) => {
     const [food, setFood] = useState([]);
     const [FoodType, setFoodType] = useState("Breakfast");
+    const [loading, setLoading] = useState("block");
     const cart = getDatabaseCart();
     const cartLength = Object.keys(cart).length;
     //console.log(cartLength);
@@ -15,6 +18,7 @@ const FoodMenu = (props) => {
         .then(res => res.json())
         .then(data => {
             setFood(data);
+            setLoading("none");
         })
         .catch(err => console.log(err))
     } ,[])
@@ -38,9 +42,15 @@ const FoodMenu = (props) => {
                     </ul>
                 </nav>
 
-            <div className="row my-5">
-                {selectedFoods.map(food => <Food key={food.id} food={food} />)}
-            </div>
+            {
+                loading === "block" ?
+                    <Loading loading={loading} />
+                    :
+                    <div className="row my-5">
+
+                        {selectedFoods.map(food => <Food key={food.id} food={food} />)}
+                    </div>
+            }
                 <div className="text-center">
                     {
                         cartLength ? 

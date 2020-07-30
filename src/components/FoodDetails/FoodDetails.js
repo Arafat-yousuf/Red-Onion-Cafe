@@ -3,11 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import './FoodDetails.css'
 import { Plus,Dash,CartPlus,ChevronCompactRight } from 'react-bootstrap-icons';
 import { addToDatabaseCart, getDatabaseCart } from '../../Utilities/localCart';
+import Loading from '../Loading/Loading';
 
 const FoodDetails = (props) => {
     const [selectedFood,setSelectedFood] = useState({})
     const {id} = useParams();
     const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState("block");
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
@@ -15,6 +17,7 @@ const FoodDetails = (props) => {
         .then(res=>res.json())
         .then(data => {
             setSelectedFood(data);
+            setLoading("none");
             const product = productKeys.find( pd => pd === data.id);
             if(product)
             setQuantity(savedCart[data.id]);
@@ -37,6 +40,10 @@ const FoodDetails = (props) => {
     }*/
     return (
         <div className = "food-details my-5 pt-5 container">
+            {
+            loading==="block"?
+            <Loading loading={loading}/>
+            :
             <div className="row">
                 <div className="col-md-6 pr-md-4">
                     <h1>{selectedFood.name}</h1>
@@ -67,6 +74,7 @@ const FoodDetails = (props) => {
                     <img className="img-fluid" src={selectedFood.image} alt="" />
                 </div>
             </div>
+}
         </div>
     );
 };

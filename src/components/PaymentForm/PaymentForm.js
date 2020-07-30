@@ -74,10 +74,10 @@ const PaymentForm = (props) => {
             {
                 paymentFinished ?
                     <Link to={"/deliveryStatus/"+orderId}>
-                        <button className="btn btn-danger btn-block">Track Your Order</button>
+                        <button className="btn btn-danger btn-block mt-3">Track Your Order</button>
                     </Link>
                     :
-                    <button disabled className="btn btn-block btn-secondary">Track Your Order</button>
+                    <button disabled className="btn btn-block btn-secondary mt-3">Track Your Order</button>
     }
         </div>
 

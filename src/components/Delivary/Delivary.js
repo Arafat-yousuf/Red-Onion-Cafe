@@ -5,6 +5,7 @@ import { removeFromDatabaseCart, getDatabaseCart, addToDatabaseCart } from '../.
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from '../PaymentForm/PaymentForm';
+import Loading from '../Loading/Loading';
 
 const Delivary = (props) => {
     const [shippingAddressFilled, setShippingAddressFilled] = useState(false);
@@ -16,6 +17,7 @@ const Delivary = (props) => {
     const { register, handleSubmit, watch, errors } = useForm();
     const stripePromise = loadStripe('pk_test_51HAASpHWttGIGToiEvm33982N4iam18LvLWIK5WXePpxE8CnsfMDNWrqK675wKBjOhClvZZGpnVXwdhFF7rm4jMD00iJ87jAOl');
     const [cart, setCart] = useState([]);
+    const [loading, setLoading] = useState("block");
 
     const onSubmit = data => {
         setDeliveryDetails(data);
@@ -53,6 +55,7 @@ const Delivary = (props) => {
                     return product;
                 });
                 setCart(cartProducts);
+                setLoading("none");
             })
 
     }, []);
@@ -71,7 +74,7 @@ const Delivary = (props) => {
         setCart(newCart);
     }
 
-    
+
 
     const subTotal = cart.reduce((acc, crr) => {
         return acc + (crr.price * crr.quantity);
@@ -126,58 +129,62 @@ const Delivary = (props) => {
                                 </div>
                             </form>
                         </div>
-                        <div className="offset-md-2 col-md-5">
-                            <div className="restaurant-info mb-5">
-                                <h4>Form <strong> Star Kabab And Restaura</strong></h4>
-                                <h5>Arriving in 20-30 min</h5>
-                                <h5>107 Rd No 9</h5>
-                            </div>
-
-                            {
-                                cart.map(item =>
-                                    <div className="single-checkout-item mb-3 bg-light rounded d-flex align-items-center justify-content-between p-3">
-                                        <img width="100px" src={item.image} alt="" />
-                                        <div>
-                                            <h6>{item.name}</h6>
-                                            <h4 className="text-danger">${item.price}</h4>
-                                            <p>Delivery free</p>
-                                        </div>
-                                        <div className="checkout-item ml-3 row">
-                                            <button onClick={() => handleCart(item.id, (item.quantity + 1))} className="btn font-weight-bolder">+</button>
-                                            <p className="bg-white m-1 pt-1 rounded">{item.quantity}</p>
-                                            {
-                                                item.quantity > 0 ?
-                                                    <button className="btn font-weight-bolder" onClick={() => handleCart(item.id, (item.quantity - 1))}>-</button>
-                                                    :
-                                                    <button disabled className="btn font-weight-bolder">-</button>
-
-                                            }
-                                        </div>
+                        {
+                            loading === "block" ?
+                                <Loading loading={loading} />
+                                :
+                                <div className="offset-md-2 col-md-5">
+                                    <div className="restaurant-info mb-5">
+                                        <h4>Form <strong> Star Kabab And Restaura</strong></h4>
+                                        <h5>Arriving in 20-30 min</h5>
+                                        <h5>107 Rd No 9</h5>
                                     </div>
-                                )
-                            }
 
-                            <div className="cart-calculation">
-                                <p className="d-flex justify-content-between"><span>Sub Total . {totalQuantity} Item</span> <span>${subTotal.toFixed(2)}</span></p>
-                                <p className="d-flex justify-content-between"><span>Tax</span> <span>${tax.toFixed(2)}</span></p>
-                                <p className="d-flex justify-content-between"><span>Delivery Fee</span> <span>${deliveryFee}</span></p>
-                                <p className="h5 d-flex justify-content-between"><span>Total</span> <span>${grandTotal.toFixed(2)}</span></p>
-                                {
-                                    totalQuantity ?
-                                        shippingAddressFilled ?
-                                                <button onClick={() => setPaymentReady(true)} className="btn btn-danger btn-block">Check Out Your Food</button>
-                                            :
-                                            <button onClick={() => alert("Please Fill Up The Address!")} className="btn btn-danger btn-block">Check Out Your Food</button>
+                                    {
+                                        cart.map(item =>
+                                            <div className="single-checkout-item mb-3 bg-light rounded d-flex align-items-center justify-content-between p-3">
+                                                <img width="100px" src={item.image} alt="" />
+                                                <div>
+                                                    <h6>{item.name}</h6>
+                                                    <h4 className="text-danger">${item.price}</h4>
+                                                    <p>Delivery free</p>
+                                                </div>
+                                                <div className="checkout-item ml-3 row">
+                                                    <button onClick={() => handleCart(item.id, (item.quantity + 1))} className="btn font-weight-bolder">+</button>
+                                                    <p className="bg-white m-1 pt-1 rounded">{item.quantity}</p>
+                                                    {
+                                                        item.quantity > 0 ?
+                                                            <button className="btn font-weight-bolder" onClick={() => handleCart(item.id, (item.quantity - 1))}>-</button>
+                                                            :
+                                                            <button disabled className="btn font-weight-bolder">-</button>
 
-                                        :
-                                        <button disabled className="btn btn-block btn-secondary">Nothing to Checkout</button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    }
 
-                                }
-                            </div>
-                        </div>
+                                    <div className="cart-calculation">
+                                        <p className="d-flex justify-content-between"><span>Sub Total . {totalQuantity} Item</span> <span>${subTotal.toFixed(2)}</span></p>
+                                        <p className="d-flex justify-content-between"><span>Tax</span> <span>${tax.toFixed(2)}</span></p>
+                                        <p className="d-flex justify-content-between"><span>Delivery Fee</span> <span>${deliveryFee}</span></p>
+                                        <p className="h5 d-flex justify-content-between"><span>Total</span> <span>${grandTotal.toFixed(2)}</span></p>
+                                        {
+                                            totalQuantity ?
+                                                shippingAddressFilled ?
+                                                    <button onClick={() => setPaymentReady(true)} className="btn btn-danger btn-block">Check Out Your Food</button>
+                                                    :
+                                                    <button onClick={() => alert("Please Fill Up The Address!")} className="btn btn-danger btn-block">Check Out Your Food</button>
 
+                                                :
+                                                <button disabled className="btn btn-block btn-secondary">Nothing to Checkout</button>
+
+                                        }
+                                    </div>
+                                </div>
+                        }
                     </div>
-                    
+
             }
 
         </div>

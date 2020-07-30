@@ -6,7 +6,7 @@ const Food = (props) => {
     const {id,name,shortDescription,price,image} = props.food;
     const cart = getDatabaseCart();
     const cartKeys = Object.keys(cart);
-    const addedFood = cartKeys.find(element => element == id);
+    const addedFood = cartKeys.find(element => element === id);
     //console.log(cart[addedFood]);
     return (
         <div className="col-md-4 mb-4">

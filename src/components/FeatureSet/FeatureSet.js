@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Feature from '../Feature/Feature';
+import Loading from '../Loading/Loading';
 
 const FeatureSet = (props) => {
     const [features , setFeatures] = useState([]);
+    const [loading, setLoading] = useState("block");
 
     useEffect(() => {
         fetch('http://localhost:4200/features')
         .then(res => res.json())
         .then(data => {
             setFeatures(data);
+            setLoading("none");
         })
         .catch(err => console.log(err))
 } ,[])
@@ -24,6 +27,7 @@ const FeatureSet = (props) => {
                             </div>
                         </div>
                     </div>
+                    <Loading loading={loading}/>
                     {
                         features.map( feature => <Feature key={feature.id} feature={feature}/>)
                     }

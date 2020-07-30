@@ -4,16 +4,19 @@ import map from '../../Images/map.png'
 import rider from '../../Images/Image/Group 1151.png'
 import helmet from '../../Images/Image/Group 1152.png'
 import { useParams } from 'react-router-dom';
+import Loading from '../Loading/Loading';
 
 const DelivaryStatus = (props) => {
     const [order,setOrder] = useState([]);
+    const [loading, setLoading] = useState("block");
     const {id} = useParams();
     useEffect(() => {
         fetch('http://localhost:4200/order/'+id)
         .then(res => res.json())
         .then(data => {
             setOrder(data);
-            console.log(data);
+            setLoading("none");
+            //console.log(data);
         })
         .catch(err => console.log(err))
     },[id] )
@@ -23,6 +26,7 @@ const DelivaryStatus = (props) => {
 
     return (
         <div className="container pt-5 my-5">
+            <Loading loading={loading}/>
             <div className="row">
                 <div className="col-md-8">
                     <img className="img-fluid" src={map} alt=""/>
