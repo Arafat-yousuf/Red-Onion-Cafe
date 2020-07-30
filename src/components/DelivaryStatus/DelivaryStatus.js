@@ -11,7 +11,7 @@ const DelivaryStatus = (props) => {
     const [loading, setLoading] = useState("block");
     const {id} = useParams();
     useEffect(() => {
-        fetch('http://localhost:4200/order/'+id)
+        fetch('https://fathomless-tundra-96989.herokuapp.com/order/'+id)
         .then(res => res.json())
         .then(data => {
             setOrder(data);
@@ -26,7 +26,10 @@ const DelivaryStatus = (props) => {
 
     return (
         <div className="container pt-5 my-5">
+            {
+            loading === "block" ?
             <Loading loading={loading}/>
+            :
             <div className="row">
                 <div className="col-md-8">
                     <img className="img-fluid" src={map} alt=""/>
@@ -72,6 +75,7 @@ const DelivaryStatus = (props) => {
                     </div>
                 </div>
             </div>
+            }
         </div>
     );
 };

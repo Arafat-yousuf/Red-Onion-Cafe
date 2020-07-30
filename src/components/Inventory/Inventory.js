@@ -19,8 +19,8 @@ const Inventory = () => {
     return (
         <div className="container py-5">
             <h1>Inventory Management</h1>
-            <button onClick={() => dataPoster('http://localhost:4200/addFoods',foods)} className="btn btn-danger mr-2">Add products</button>
-            <button onClick={() => dataPoster('http://localhost:4200/addFeatures', features)} className="btn btn-danger">Add Features</button>
+            <button onClick={() => dataPoster('https://fathomless-tundra-96989.herokuapp.com/addFoods',foods)} className="btn btn-danger mr-2">Add products</button>
+            <button onClick={() => dataPoster('https://fathomless-tundra-96989.herokuapp.com/addFeatures', features)} className="btn btn-danger">Add Features</button>
         </div>
     );
 };

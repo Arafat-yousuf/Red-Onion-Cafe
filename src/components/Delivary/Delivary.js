@@ -37,8 +37,11 @@ const Delivary = (props) => {
         //cart
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        //console.log(productKeys);
-        fetch('http://localhost:4200/getFoodsById', {
+        if(productKeys.length === 0){
+            setLoading("none");
+        }
+        //console.log(productKeys.length);
+        fetch('https://fathomless-tundra-96989.herokuapp.com/getFoodsById', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

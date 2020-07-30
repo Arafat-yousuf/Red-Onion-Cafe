@@ -13,7 +13,7 @@ const FoodDetails = (props) => {
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        fetch("http://localhost:4200/food/"+ id)
+        fetch("https://fathomless-tundra-96989.herokuapp.com/food/"+ id)
         .then(res=>res.json())
         .then(data => {
             setSelectedFood(data);

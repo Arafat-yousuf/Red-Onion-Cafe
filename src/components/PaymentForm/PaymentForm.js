@@ -25,7 +25,7 @@ const PaymentForm = (props) => {
             shipment: props.deliveryDetails,
             payment: payment
         };
-        fetch('http://localhost:4200/placeOrder', {
+        fetch('https://fathomless-tundra-96989.herokuapp.com/placeOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -8,7 +8,7 @@ const SearchFood = () => {
     const {query} = useParams();
     
     useEffect(() => {
-        fetch('http://localhost:4200/foods')
+        fetch('https://fathomless-tundra-96989.herokuapp.com/foods')
         .then(res => res.json())
         .then(data => {
             setFood(data);

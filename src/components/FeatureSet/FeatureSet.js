@@ -7,7 +7,7 @@ const FeatureSet = (props) => {
     const [loading, setLoading] = useState("block");
 
     useEffect(() => {
-        fetch('http://localhost:4200/features')
+        fetch('https://fathomless-tundra-96989.herokuapp.com/features')
         .then(res => res.json())
         .then(data => {
             setFeatures(data);
