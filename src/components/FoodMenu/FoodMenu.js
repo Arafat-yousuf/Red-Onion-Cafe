@@ -48,7 +48,7 @@ const FoodMenu = (props) => {
                     :
                     <div className="row my-5">
 
-                        {selectedFoods.map(food => <Food key={food.id} food={food} />)}
+                        {selectedFoods && selectedFoods.map(food => <Food key={food.id} food={food} />)}
                     </div>
             }
                 <div className="text-center">

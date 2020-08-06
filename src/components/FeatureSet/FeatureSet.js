@@ -29,7 +29,7 @@ const FeatureSet = (props) => {
                     </div>
                     <Loading loading={loading}/>
                     {
-                        features.map( feature => <Feature key={feature.id} feature={feature}/>)
+                        features && features.map( feature => <Feature key={feature.id} feature={feature}/>)
                     }
                     
                 </div>
