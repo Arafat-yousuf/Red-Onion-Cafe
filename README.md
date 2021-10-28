@@ -1,2 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Sample Restaurant Website for food ordering
 
+### **[Live Site](https://red-onion-cafe-ce195.firebaseapp.com/)**
+
+#### **Requirements**:
+* React.
+* Node.js
+* MongoDB
+* Firebase
+* Heroku
+* Stripe
+
+![All Pages](assets/red-on.jpeg)
