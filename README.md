@@ -1,4 +1,4 @@
-# Sample Restaurant Website for food ordering
+# Sample Restaurant Website
 
 ### **[Live Site](https://red-onion-cafe-ce195.firebaseapp.com/)**
 
