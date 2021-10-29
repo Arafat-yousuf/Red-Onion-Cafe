@@ -11,3 +11,15 @@
 * Stripe
 
 ![All Pages](assets/red-on.jpeg)
+
+
+## Developers
+- Tashfiq Ahmed (170104038)
+- Arafat Yousuf (170104140)
+
+
+### Updates
+
+  - Some Bugs has been partially fixed.
+  - Unfortunately, Some bugs Still Remaining.
+  - Google Map is Behaving Weirdly and so it is still under Construction
