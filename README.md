@@ -15,7 +15,6 @@
 
 ## Developers
 - Foisal Reza (170104152)
-- Tashfiq Ahmed (170104038)
 - Arafat Yousuf (170104140)
 
 
